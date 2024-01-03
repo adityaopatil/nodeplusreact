@@ -10,7 +10,7 @@ const Movie = mongoose.model(
       required: true,
       trim: true,
       minlength: 1,
-      maxlength: 50,
+      maxlength: 255,
     },
     genre: { type: genreSchema, required: true }, //Passing our mongoose genre schema
     numberInStock: {
@@ -25,15 +25,19 @@ const Movie = mongoose.model(
       min: 0,
       max: 255,
     },
+    liked: {
+      type: Boolean,
+    },
   })
 );
 
 function validateMovie(movie) {
   const schema = Joi.object({
     title: Joi.string().required().min(1).max(50),
-    genreId: Joi.objectId().required(), //Here we only need the ID of genre not the genre document
+    genreId: Joi.string().required(), //Here we only need the ID of genre not the genre document
     numberInStock: Joi.number().required().max(100),
     dailyRentalRate: Joi.number().required().max(100),
+    liked: Joi.boolean(),
   });
 
   return schema.validate(movie);

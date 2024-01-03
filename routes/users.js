@@ -8,7 +8,7 @@ const router = express.Router();
 //To get the current user we can have an api endpoint like me
 //with this the client is not going to send the id we are going to get
 //it from the JSON web token.
-router.get("/me", auth, async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password"); //we exclude  the password
   res.send(user);
 });
@@ -27,10 +27,16 @@ router.post("/", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
 
   await user.save();
+  console.log(user);
+  //When I do console.log here I get complete user obj name,_id,email,isAdmin
 
   const token = user.generateAuthToken();
+
+  //When I print this token and pass it through JSON webtoken it is only showing isAdmin and iat
+  //Why?
   res
     .header("x-auth-token", token)
+    .header("access-control-expose-headers", "x-auth-token")
     .send(_.pick(user, ["_id", "name", "email", "isAdmin"]));
 });
 

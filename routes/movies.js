@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { validateMovie, Movie } = require("../models/movie");
 const { Genre } = require("../models/genre");
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const movies = await Movie.find().sort("title");
@@ -30,9 +31,10 @@ router.post("/", async (req, res) => {
     },
     numberInStock: req.body.numberInStock,
     dailyRentalRate: req.body.dailyRentalRate,
+    liked: req.body.liked,
   });
 
-  //   movie = await movie.save();
+  await movie.save();
   res.send(movie);
 });
 
@@ -43,7 +45,7 @@ router.put("/:id", async (req, res) => {
   const genre = await Genre.findById(req.body.genreId);
   if (!genre) return res.status(400).send("Invalid Genre");
 
-  let movie = await Movie.findByIdAndUpdate(
+  const movie = await Movie.findByIdAndUpdate(
     req.params.id,
     {
       title: req.body.title,
@@ -53,6 +55,7 @@ router.put("/:id", async (req, res) => {
       },
       numberInStock: req.body.numberInStock,
       dailyRentalRate: req.body.dailyRentalRate,
+      liked: req.body.liked,
     },
     { new: true }
   );
@@ -64,18 +67,16 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const { error } = validateMovie(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  const genre = await Genre.findById(req.body.genreId);
-  if (!genre) return res.status(400).send("Invalid Genre");
-
-  let movie = await Movie.findByIdAndRemove(req.params.id);
-
-  if (!movie)
-    return res.status(404).send("Movie with given id is not available");
-
-  res.send(movie);
+  try {
+    const movie = await Movie.findByIdAndDelete(req.params.id);
+    if (!movie) {
+      return res.status(404).send("Movie with given id is not available");
+    }
+    res.send(movie);
+  } catch (error) {
+    console.error("Error deleting movie:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
