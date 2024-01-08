@@ -8,10 +8,11 @@ const router = express.Router();
 //To get the current user we can have an api endpoint like me
 //with this the client is not going to send the id we are going to get
 //it from the JSON web token.
-router.get("/:id", auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password"); //we exclude  the password
   res.send(user);
 });
+//To get the current user we need to add the x-auth-token in postman
 
 router.post("/", async (req, res) => {
   const result = validateUser(req.body);

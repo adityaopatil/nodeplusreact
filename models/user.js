@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const passwordComplexity = require("joi-password-complexity");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -41,12 +42,23 @@ userSchema.methods.generateAuthToken = function () {
 
 const User = mongoose.model("User", userSchema);
 
+// Define the complexity requirements for the password
+const complexityOptions = {
+  min: 8, // Minimum password length
+  max: 30, // Maximum password length
+  lowerCase: 1, // Require at least 1 lowercase letter
+  upperCase: 1, // Require at least 1 uppercase letter
+  numeric: 1, // Require at least 1 numeric character
+  symbol: 1, // Require at least 1 special character
+  requirementCount: 4, // Total number of requirements to satisfy
+};
+
 function validateUser(user) {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
     //Here we also call the email method to make sure its a valid email
-    password: Joi.string().min(5).max(255).required(),
+    password: passwordComplexity(complexityOptions).required(),
     isAdmin: Joi.boolean().required(),
   });
 
