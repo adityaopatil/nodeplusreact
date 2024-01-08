@@ -1,19 +1,17 @@
 const admin = require("../middleware/admin");
 const auth = require("../middleware/auth");
+const validateObjectId = require("../middleware/validateObjectId");
 const { validateGenre, Genre } = require("../models/genre");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
-  try {
-    const genres = await Genre.find().sort("genre");
-    res.send(genres);
-  } catch (err) {
-    res.status(500).send("Something Failed....");
-  }
+  // throw new Error("Could not get Genres");
+  const genres = await Genre.find().sort("genre");
+  res.send(genres);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   if (!genre)

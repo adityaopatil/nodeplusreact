@@ -1,8 +1,8 @@
-// const winston = require("winston");
+const winston = require("winston");
 module.exports = function (err, req, res, next) {
   //So whenever an error comes will log it inside the file
   //here we also need to set a logging level
-  //   winston.error(err.message, err);
+  winston.error(err.message, err);
   //levels of errors
   //error
   //warnings
@@ -10,5 +10,5 @@ module.exports = function (err, req, res, next) {
   //verbose
   //debug
   //silly
-  res.status(500).send("Something Failed");
+  res.status(500).send("Something Failed...");
 };
