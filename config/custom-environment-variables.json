@@ -1,5 +1,5 @@
 {
   "jwtPrivateKey": "vidly_jwtPrivateKey",
   "db": "vidly_db",
-  "NODE_ENV": "production"
+  "NODE_ENV": ""
 }
