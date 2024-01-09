@@ -25,6 +25,7 @@ router.post("/", auth, async (req, res) => {
   let customer = new Customer({
     name: req.body.name,
     phone: req.body.phone,
+    isGold: req.body.isGold,
   });
 
   customer = await customer.save();
