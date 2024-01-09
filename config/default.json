@@ -1,5 +1,5 @@
 {
   "jwtPrivateKey": "mySecureKey",
-  "db": "mongodb://localhost/vidly",
+  "db": "mongodb+srv://patiladi3119:AdityaPatil31@clusterreactproject.bzfqgnw.mongodb.net/?retryWrites=true&w=majority",
   "NODE_ENV": "development"
 }
