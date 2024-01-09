@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const validation = require("../startup/validation");
 
 const Rental = mongoose.model(
   "Rental",
