@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const validation = require("../startup/validation");
 
 const Rental = mongoose.model(
   "Rental",
@@ -15,7 +14,7 @@ const Rental = mongoose.model(
           type: String,
           required: true,
           minlength: 5,
-          maxlength: 50,
+          maxlength: 100,
         },
         isGold: {
           type: Boolean,

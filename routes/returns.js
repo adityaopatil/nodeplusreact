@@ -13,6 +13,8 @@ router.post("/", [auth, validate(validateReturn)], async (req, res, next) => {
     "movie._id": req.body.movieId,
   });
 
+  //   console.log(rental);
+
   if (!rental) return res.status(404).send("Rental not found");
 
   if (!rental.dateReturned)

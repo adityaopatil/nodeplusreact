@@ -37,7 +37,8 @@ router.post("/", auth, async (req, res) => {
   });
   rental = await rental.save();
 
-  movie.numberInStock--;
+  movie.numberInStock--; //Here we decrement the number in stock as we
+  //rented one movie.
   movie.save();
 
   res.send(rental);

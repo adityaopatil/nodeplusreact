@@ -31,10 +31,10 @@ const Movie = mongoose.model(
   })
 );
 
-function validateMovie(movie) {
+function validate(movie) {
   const schema = Joi.object({
     title: Joi.string().required().min(1).max(50),
-    genreId: Joi.string().required(), //Here we only need the ID of genre not the genre document
+    genreId: Joi.objectId().required(), //Here we only need the ID of genre not the genre document
     numberInStock: Joi.number().required().max(100),
     dailyRentalRate: Joi.number().required().max(100),
     liked: Joi.boolean(),
@@ -44,4 +44,4 @@ function validateMovie(movie) {
 }
 
 exports.Movie = Movie;
-exports.validateMovie = validateMovie;
+exports.validateMovie = validate;
