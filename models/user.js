@@ -42,7 +42,6 @@ userSchema.methods.generateAuthToken = function () {
 
 const User = mongoose.model("User", userSchema);
 
-// Define the complexity requirements for the password
 const complexityOptions = {
   min: 8, // Minimum password length
   max: 30, // Maximum password length
