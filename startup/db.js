@@ -1,8 +1,18 @@
 const mongoose = require("mongoose");
 const config = require("config");
+require("dotenv").config();
 
 module.exports = function () {
-  const db = config.get("db");
+  const mode = process.env.NODE_ENV;
+  let db = "";
+  if (mode === "development") {
+    db = config.get("db");
+  } else if (mode === "production") {
+    // console.log("production");
+    db = process.env.MONGODB_CONNECT_URI;
+    // console.log(db);
+  }
+
   mongoose
     .connect(db)
     .then(() => console.log(`Connected to ${db}...`))
