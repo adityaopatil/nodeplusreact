@@ -1,0 +1,5 @@
+while setting the vidly_db
+To avoid the w string break
+Initialize the variable like 
+this
+set "vidly_db=mongodb+srv://patiladi3119:AdityaPatil31@clusterreactproject.bzfqgnw.mongodb.net/?retryWrites=true&w=majority"
