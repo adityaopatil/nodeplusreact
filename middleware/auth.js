@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
+require("dotenv").config();
 
 //Creating a middleware function
 module.exports = function (req, res, next) {
@@ -11,7 +12,9 @@ module.exports = function (req, res, next) {
   //So if there is a token we need to verify if its a valid token
   try {
     //we use config module to read the private key from our env variable
-    const decoded = jwt.verify(token, config.get("jwtPrivateKey"));
+    const privateKey =
+      process.env.vidly_jwtPrivateKey || config.get("jwtPrivateKey");
+    const decoded = jwt.verify(token, privateKey);
     req.user = decoded;
     //We get the decoded token and we pass it to the user obj or the request
     next(); //Here the next processing pipeline is our route handler

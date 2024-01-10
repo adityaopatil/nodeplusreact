@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-const config = require("config");
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
+const config = require("config");
+require("dotenv").config();
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -28,6 +29,8 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
+  const privateKey =
+    process.env.vidly_jwtPrivateKey || config.get("jwtPrivateKey");
   const token = jwt.sign(
     {
       _id: this._id,
@@ -35,7 +38,7 @@ userSchema.methods.generateAuthToken = function () {
       email: this.email,
       isAdmin: this.isAdmin,
     },
-    config.get("jwtPrivateKey")
+    privateKey
   );
   return token;
 };
